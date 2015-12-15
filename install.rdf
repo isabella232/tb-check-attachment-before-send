@@ -8,7 +8,6 @@
                    em:version="0.1"
                    em:description="Confirms to send a mail with any attachment."
                    em:creator="ClearCode Inc."
-                   em:unpack="true"
                    em:homepageURL="http://www.clear-code.com/">
 
     <!--em:updateURL></em:updateURL-->
