@@ -3,6 +3,8 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 content	check-attachment-before-send	content/
+locale	check-attachment-before-send	en-US	locale/en-US/
+locale	check-attachment-before-send	ja	locale/ja/
 
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://check-attachment-before-send/content/composeOverlay.xul
 
