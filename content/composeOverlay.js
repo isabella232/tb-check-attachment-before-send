@@ -28,7 +28,7 @@ var CheckAttachmentBeforeSendHelper = {
   },
 
   get confirmationPattern() {
-    if (this._cachedConfirmationPattern)
+    if ('_cachedConfirmationPattern' in this)
       return this._cachedConfirmationPattern;
 
     var pattern = utils.getMyPref('confirmationPattern') || '';
@@ -36,7 +36,14 @@ var CheckAttachmentBeforeSendHelper = {
       return this._cachedConfirmationPattern = null;
 
     pattern = pattern.trim();
-    return this._cachedConfirmationPattern = new RegExp(pattern, 'i');
+    try {
+      pattern = new RegExp(pattern, 'i');
+    }
+    catch(e) {
+      Cu.reportError(e);
+      pattern = null;
+    }
+    return this._cachedConfirmationPattern = pattern;
   },
 
   get hasAttachment() {
