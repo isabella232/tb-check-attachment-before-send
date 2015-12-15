@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://check-attachment-before-send/locale/check-attachment-before-send.dtd">
+<dialog id="check-attachment-before-send-confirm-dialog"
+        title="&confirm.title;"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        buttons="accept,cancel"
+        buttonlabelaccept="&confirm.accept.label;"
+        buttonlabelcancel="&confirm.cancel.label;"
+        onload="onLoad()"
+        ondialogaccept="return onAccept();"
+        ondialogcancel="return onCancel();"
+        width="600"
+        height="500"
+        persist="width height screenX screenY">
+  <script type="application/x-javascript"
+          src="./confirm.js"/>
+  <stringbundleset>
+    <stringbundle id="messages"
+                  src="chrome://check-attachment-before-send/locale/check-attachment-before-send.properties"/>
+  </stringbundleset>
+</dialog>

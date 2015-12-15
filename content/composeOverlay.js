@@ -67,10 +67,10 @@ var CheckAttachmentBeforeSendHelper = {
     return attachmentsCount > 0;
   },
 
-  get bodyText() {
+  get body() {
     var holderNode = gMsgCompose.editor.document.body ||
                  gMsgCompose.editor.document.documentElement;
-    return holderNode.textContent.replace(/\s+/g, '');
+    return holderNode;
   },
 
   get subject() {
@@ -88,7 +88,7 @@ var CheckAttachmentBeforeSendHelper = {
     }
 
     if (this.confirmationPattern &&
-        !this.confirmationPattern.test(this.bodyText) &&
+        !this.confirmationPattern.test(this.body.textContent.replace(/\s+/g, '')) &&
         !this.confirmationPattern.test(this.subject)) {
       this.log('Not matched to the confirmation pattern.', this.confirmationPattern.source);
       return true;
@@ -101,7 +101,17 @@ var CheckAttachmentBeforeSendHelper = {
     }
     this.log('External recipients are detected: ', recipients);
 
-    return true;
+    var params = {
+      confirmed:  false,
+      recipients: recipients,
+      body:       this.body.cloneNode(true)
+    };
+    window.openDialog('chrome://check-attachment-before-send/content/confirm.xul',
+                      'check-attachment-before-send',
+                      'resizable,chrome,modal,titlebar,centerscreen',
+                      window,
+                      params);
+    return params.confirmed;
   },
 
   getAllRecipients: function() {
