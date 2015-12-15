@@ -1,0 +1,10 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!ENTITY confirm.title "この添付ファイルありのメールを送信してもよいですか？">
+
+<!ENTITY confirm.body.caption "本文:">
+
+<!ENTITY confirm.accept.label "送信">
+<!ENTITY confirm.cancel.label "キャンセル">
