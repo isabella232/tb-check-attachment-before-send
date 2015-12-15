@@ -25,6 +25,18 @@ var CheckAttachmentBeforeSendHelper = {
     });
   },
 
+  get confirmationPattern() {
+    if (this._cachedConfirmationPattern)
+      return this._cachedConfirmationPattern;
+
+    var pattern = this.prefs.getPref(this.BASE + 'confirmationPattern') || '';
+    if (!pattern)
+      return this._cachedConfirmationPattern = null;
+
+    pattern = pattern.trim();
+    return this._cachedConfirmationPattern = new RegExp(pattern, 'i');
+  },
+
   log: function(aMessage, ...aExtraArgs) {
     if (!this.prefs.getPref(this.BASE + 'debug')) {
       return;
@@ -47,11 +59,30 @@ var CheckAttachmentBeforeSendHelper = {
     return attachmentsCount > 0;
   },
 
+  get bodyText() {
+    var holderNode = gMsgCompose.editor.document.body ||
+                 gMsgCompose.editor.document.documentElement;
+    return holderNode.textContent.replace(/\s+/g, '');
+  },
+
+  get subject() {
+    return gMsgCompose.compFields.subject;
+  },
+
   confirm: function() {
-    delete this._cachekdIgnoredDomains; // clear cache
+    // clear cache
+    delete this._cachekdIgnoredDomains;
+    delete this._cachedConfirmationPattern;
 
     if (!this.hasAttachment) {
       this.log('No attachment.');
+      return true;
+    }
+
+    if (this.confirmationPattern &&
+        !this.confirmationPattern.test(this.bodyText) &&
+        !this.confirmationPattern.test(this.subject)) {
+      this.log('Not matched to the confirmation pattern.', this.confirmationPattern.source);
       return true;
     }
 
