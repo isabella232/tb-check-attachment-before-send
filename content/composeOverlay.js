@@ -41,8 +41,19 @@ var CheckAttachmentBeforeSendHelper = {
 	ConsoleService.logStringMessage(aMessage);
   },
 
+  get hasAttachment() {
+    var attachmentsBacket = GetMsgAttachmentElement();
+    var attachmentsCount = attachmentsBacket.itemCount;
+    return attachmentsCount > 0;
+  },
+
   confirm: function() {
     delete this._cachekdIgnoredDomains; // clear cache
+
+    if (!this.hasAttachment) {
+      this.log('No attachment.');
+      return true;
+    }
 
     var recipients = this.getAllRecipients();
     if (recipients.to.length + recipients.cc.length + recipients.bcc.length === 0) {
