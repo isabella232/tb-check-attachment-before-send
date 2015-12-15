@@ -9,23 +9,15 @@ var Cu = Components.utils;
 
 var MimeHeaderParser = Cc['@mozilla.org/messenger/headerparser;1']
                          .getService(Ci.nsIMsgHeaderParser);
-var ConsoleService = Cc['@mozilla.org/consoleservice;1']
-                       .getService(Ci.nsIConsoleService);
+
+var { CheckAttachmentBeforeSendUtils: utils } = Cu.import('resource://check-attachment-before-send-modules/utils.js', {});
 
 var CheckAttachmentBeforeSendHelper = {
-  BASE: 'extensions.check-attachment-before-send@clear-code.com.',
-
-  get prefs() {
-    delete this.prefs;
-    var { prefs } = Cu.import('resource://check-attachment-before-send-modules/prefs.js', {});
-    return this.prefs = prefs;
-  },
-
   get ignoredDomains() {
     if (this._cachekdIgnoredDomains)
       return this._cachekdIgnoredDomains;
 
-    var domains = this.prefs.getPref(this.BASE + 'ignoreDomains') || '';
+    var domains = utils.getMyPref('ignoreDomains') || '';
     if (!domains)
       return this._cachekdIgnoredDomains = [];
 
@@ -39,26 +31,12 @@ var CheckAttachmentBeforeSendHelper = {
     if (this._cachedConfirmationPattern)
       return this._cachedConfirmationPattern;
 
-    var pattern = this.prefs.getPref(this.BASE + 'confirmationPattern') || '';
+    var pattern = utils.getMyPref('confirmationPattern') || '';
     if (!pattern)
       return this._cachedConfirmationPattern = null;
 
     pattern = pattern.trim();
     return this._cachedConfirmationPattern = new RegExp(pattern, 'i');
-  },
-
-  log: function(aMessage, ...aExtraArgs) {
-    if (!this.prefs.getPref(this.BASE + 'debug')) {
-      return;
-    }
-
-    aMessage = aMessage || '';
-    aMessage = '[check-attachment-before-send] ' + aMessage;
-    aExtraArgs.forEach(function(aArg) {
-      aMessage += ', ' + JSON.stringify(aArg);
-    });
-
-	ConsoleService.logStringMessage(aMessage);
   },
 
   get hasAttachment() {
@@ -83,23 +61,23 @@ var CheckAttachmentBeforeSendHelper = {
     delete this._cachedConfirmationPattern;
 
     if (!this.hasAttachment) {
-      this.log('No attachment.');
+      utils.log('No attachment.');
       return true;
     }
 
     if (this.confirmationPattern &&
         !this.confirmationPattern.test(this.body.textContent.replace(/\s+/g, '')) &&
         !this.confirmationPattern.test(this.subject)) {
-      this.log('Not matched to the confirmation pattern.', this.confirmationPattern.source);
+      utils.log('Not matched to the confirmation pattern.', this.confirmationPattern.source);
       return true;
     }
 
     var recipients = this.getAllRecipients();
     if (recipients.to.length + recipients.cc.length + recipients.bcc.length === 0) {
-      this.log('No external recipient.');
+      utils.log('No external recipient.');
       return true;
     }
-    this.log('External recipients are detected: ', recipients);
+    utils.log('External recipients are detected: ', recipients);
 
     var params = {
       confirmed:  false,
