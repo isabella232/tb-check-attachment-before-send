@@ -10,10 +10,15 @@ function getMessage(aKey) {
   return bundle.getString(aKey);
 }
 
+var gParams;
+
 function onLoad() {
+  gParams = window.arguments[0];
 }
 
 function onAccept() {
+  gParams.confirmed = true;
+  window.close();
 }
 
 function onCancel() {
