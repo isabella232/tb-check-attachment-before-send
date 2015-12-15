@@ -3,7 +3,54 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var CheckAttachmentBeforeSendHelper = {
+  BASE: 'extensions.check-attachment-before-send@clear-code.com.',
+
+  get prefs() {
+    delete this.prefs;
+    var { prefs } = Components.utils.import('resource://check-attachment-before-send-modules/prefs.js', {});
+    return this.prefs = prefs;
+  },
+
+  get ignoredDomains() {
+    if (this._cachekdIgnoredDomains)
+      return this._cachekdIgnoredDomains;
+
+    var domains = this.prefs.getPref(this.BASE + 'ignoreDomains') || '';
+    if (!domains)
+      return this._cachekdIgnoredDomains = [];
+
+    domains = domains.replace(/^[,|]|[,|]$/g, '').split(/\s*[,|]\s*|\s+/);
+    return this._cachekdIgnoredDomains = domains.filter(function(aDomain) {
+      return aDomain.trim() !== '';
+    });
+  },
+
+  log: function(aMessage, ...aExtraArgs) {
+    if (!this.prefs.getPref(this.BASE + 'debug')) {
+      return;
+    }
+
+    aMessage = aMessage || '';
+    aMessage = '[check-attachment-before-send] ' + aMessage;
+    aExtraArgs.forEach(function(aArg) {
+      aMessage += ', ' + JSON.stringify(aArg);
+    });
+
+    ConsoleService = Components.classes['@mozilla.org/consoleservice;1']
+                       .getService(Components.interfaces.nsIConsoleService);
+	ConsoleService.logStringMessage(aMessage);
+  },
+
   confirm: function() {
+    delete this._cachekdIgnoredDomains; // clear cache
+
+    var recipients = this.getAllRecipients();
+    if (recipients.to.length + recipients.cc.length + recipients.bcc.length === 0) {
+      this.log('No external address.');
+      return true;
+    }
+
+    this.log('External addresses are detected: ', recipients);
     return true;
   },
 
@@ -12,7 +59,7 @@ var CheckAttachmentBeforeSendHelper = {
     Recipients2CompFields(msgCompFields);
     gMsgCompose.expandMailingLists();
 
-    var recipients = {
+    return {
       to:  this.splitRecipients(msgCompFields.to, 'To'),
       cc:  this.splitRecipients(msgCompFields.cc, 'Cc'),
       bcc: this.splitRecipients(msgCompFields.bcc, 'Bcc')
@@ -29,8 +76,12 @@ var CheckAttachmentBeforeSendHelper = {
                          aAddressesSource, addresses, names, fullNames);
     var recipients = [];
     for (let i = 0; i < numAddresses; i++) {
+      let address = addresses.value[i];
+      let domain = address.split('@')[1];
+      if (this.ignroedDomains.indexOf(domain) > -1)
+        continue;
       recipients.push({
-        address:  addresses.value[i],
+        address:  address,
         name:     names.value[i],
         fullName: fullNames.value[i],
         type:     aType
