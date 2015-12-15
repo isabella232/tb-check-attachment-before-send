@@ -87,7 +87,6 @@ var CheckAttachmentBeforeSendHelper = {
     window.openDialog('chrome://check-attachment-before-send/content/confirm.xul',
                       'check-attachment-before-send',
                       'resizable,chrome,modal,titlebar,centerscreen',
-                      window,
                       params);
     return params.confirmed;
   },
