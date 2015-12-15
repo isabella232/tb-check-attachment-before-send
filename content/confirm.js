@@ -26,7 +26,7 @@ function onLoad() {
   gParams.recipients.cc.forEach(addRecipientItem);
   gParams.recipients.bcc.forEach(addRecipientItem);
 
-  checkAllRecipientsConfirmed();
+  checkAllRecipientsVerified();
 }
 
 function addRecipientItem(aRecipient) {
@@ -74,23 +74,23 @@ function onRecipientClick(aEvent) {
       ).singleNodeValue;
   if (checkbox) {
     checkbox.checked = !checkbox.checked;
-    checkAllRecipientsConfirmed();
+    checkAllRecipientsVerified();
   }
 }
 
-function isAllRecipientsConfirmed() {
+function isAllRecipientsVerified() {
   return Array.every(document.querySelectorAll('checkbox'), function(aCheckbox) {
     return aCheckbox.checked;
   });
 }
 
-function checkAllRecipientsConfirmed() {
+function checkAllRecipientsVerified() {
   if (!utils.getMyPref('disableAcceptUntilChecked')) {
     return;
   }
 
   let acceptButton = document.documentElement.getButton('accept');
-  acceptButton.disabled = !isAllRecipientsConfirmed();
+  acceptButton.disabled = !isAllRecipientsVerified();
 }
 
 function onAccept() {
