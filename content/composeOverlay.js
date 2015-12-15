@@ -1,13 +1,23 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+(function() {
+
+var Cc = Components.classes;
+var Ci = Components.interfaces;
+var Cu = Components.utils;
+
+var MimeHeaderParser = Cc['@mozilla.org/messenger/headerparser;1']
+                         .getService(Ci.nsIMsgHeaderParser);
+var ConsoleService = Cc['@mozilla.org/consoleservice;1']
+                       .getService(Ci.nsIConsoleService);
 
 var CheckAttachmentBeforeSendHelper = {
   BASE: 'extensions.check-attachment-before-send@clear-code.com.',
 
   get prefs() {
     delete this.prefs;
-    var { prefs } = Components.utils.import('resource://check-attachment-before-send-modules/prefs.js', {});
+    var { prefs } = Cu.import('resource://check-attachment-before-send-modules/prefs.js', {});
     return this.prefs = prefs;
   },
 
@@ -48,8 +58,6 @@ var CheckAttachmentBeforeSendHelper = {
       aMessage += ', ' + JSON.stringify(aArg);
     });
 
-    ConsoleService = Components.classes['@mozilla.org/consoleservice;1']
-                       .getService(Components.interfaces.nsIConsoleService);
 	ConsoleService.logStringMessage(aMessage);
   },
 
@@ -109,12 +117,10 @@ var CheckAttachmentBeforeSendHelper = {
   },
 
   splitRecipients: function(aAddressesSource, aType){
-    var gMimeHeaderParser = Components.classes['@mozilla.org/messenger/headerparser;1']
-                              .getService(Components.interfaces.nsIMsgHeaderParser);
     var addresses = {};
     var names = {};
     var fullNames = {};
-    var numAddresses = gMimeHeaderParser.parseHeadersWithArray(
+    var numAddresses = MimeHeaderParser.parseHeadersWithArray(
                          aAddressesSource, addresses, names, fullNames);
     var recipients = [];
     for (let i = 0; i < numAddresses; i++) {
@@ -132,6 +138,7 @@ var CheckAttachmentBeforeSendHelper = {
     return recipients;
   },
 };
+window.CheckAttachmentBeforeSendHelper = CheckAttachmentBeforeSendHelper;
 
 window.addEventListener('load', function CheckAttachmentBeforeSendOnLoad(aEvent) {
   window.removeEventListener(aEvent.type, CheckAttachmentBeforeSendOnLoad, false);
@@ -160,3 +167,5 @@ window.addEventListener('load', function CheckAttachmentBeforeSendOnLoad(aEvent)
     window.__checkattachmentbeforesend__SendMessageLater.apply(this, aArgs);
   };
 }, false);
+
+})();
