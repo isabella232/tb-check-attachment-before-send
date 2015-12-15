@@ -5,3 +5,5 @@
 content	check-attachment-before-send	content/
 
 overlay	chrome://messenger/content/messengercompose/messengercompose.xul	chrome://check-attachment-before-send/content/composeOverlay.xul
+
+resource check-attachment-before-send modules/

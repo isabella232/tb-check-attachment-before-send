@@ -1,3 +1,6 @@
 [submodule "makexpi"]
 	path = makexpi
 	url = https://github.com/piroor/makexpi.git
+[submodule "extlib/prefs"]
+	path = extlib/prefs
+	url = https://github.com/piroor/fxaddonlib-prefs.git

@@ -4,10 +4,14 @@ PACKAGE_NAME = check-attachment-before-send
 
 all: xpi
 
-xpi: makexpi/makexpi.sh
+xpi: makexpi/makexpi.sh extlib/prefs/prefs.js
+	cp extlib/prefs/prefs.js modules/
 	makexpi/makexpi.sh -n $(PACKAGE_NAME) -o
 
 makexpi/makexpi.sh:
+	git submodule update --init
+
+extlib/prefs/prefs.js:
 	git submodule update --init
 
 signed: xpi
