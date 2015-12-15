@@ -78,7 +78,7 @@ var CheckAttachmentBeforeSendHelper = {
     for (let i = 0; i < numAddresses; i++) {
       let address = addresses.value[i];
       let domain = address.split('@')[1];
-      if (this.ignroedDomains.indexOf(domain) > -1)
+      if (this.ignoredDomains.indexOf(domain) > -1)
         continue;
       recipients.push({
         address:  address,
