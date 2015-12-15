@@ -94,6 +94,12 @@ function checkAllRecipientsVerified() {
 }
 
 function onAccept() {
+  if (!isAllRecipientsVerified()) {
+    let prompt = Cc['@mozilla.org/embedcomp/prompt-service;1']
+                   .getService(Ci.nsIPromptService);
+    prompt.alert(window, getMessage('notVerifiedYet.title'), getMessage('notVerifiedYet.text'));
+    return false;
+  }
   utils.log('accepted');
   gParams.confirmed = true;
   window.close();
