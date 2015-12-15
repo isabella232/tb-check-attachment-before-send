@@ -59,6 +59,7 @@ var CheckAttachmentBeforeSendHelper = {
     // clear cache
     delete this._cachekdIgnoredDomains;
     delete this._cachedConfirmationPattern;
+    this.lastConfirmed = false;
 
     if (!this.hasAttachment) {
       utils.log('No attachment.');
@@ -88,7 +89,7 @@ var CheckAttachmentBeforeSendHelper = {
                       'check-attachment-before-send',
                       'resizable,chrome,modal,titlebar,centerscreen',
                       params);
-    return params.confirmed;
+    return this.lastConfirmed = params.confirmed;
   },
 
   getAllRecipients: function() {
@@ -124,6 +125,26 @@ var CheckAttachmentBeforeSendHelper = {
     }
     return recipients;
   },
+
+  doPostProcess: function(aCallback) {
+    if (typeof window.CheckAndSend === 'function') {
+      let prefixedName = '__checkattachmentbeforesend__confirmSend';
+      if (typeof CheckAndSend.prototype[prefixedName] !== 'function') {
+        CheckAndSend.prototype[prefixedName] = CheckAndSend.prototype.confirmSend;
+        let self = this;
+        CheckAndSend.prototype.confirmSend = function(...aArgs) {
+          if (utils.getMyPref('bypassConfirmationByOthers') &&
+              self.lastConfirmed) {
+            return true;
+          }
+          else {
+            return CheckAndSend.prototype[prefixedName].apply(this, aArgs);
+          }
+        };
+      }
+    }
+    aCallback();
+  }
 };
 window.CheckAttachmentBeforeSendHelper = CheckAttachmentBeforeSendHelper;
 
@@ -135,7 +156,9 @@ window.addEventListener('load', function CheckAttachmentBeforeSendOnLoad(aEvent)
     if (!CheckAttachmentBeforeSendHelper.confirm()) {
       return;
     }
-    window.__checkattachmentbeforesend__SendMessage.apply(this, aArgs);
+    CheckAttachmentBeforeSendHelper.doPostProcess((function() {
+      window.__checkattachmentbeforesend__SendMessage.apply(this, aArgs);
+    }).bind(this));
   };
 
   window.__checkattachmentbeforesend__SendMessageWithCheck = window.SendMessageWithCheck;
@@ -143,7 +166,9 @@ window.addEventListener('load', function CheckAttachmentBeforeSendOnLoad(aEvent)
     if (!CheckAttachmentBeforeSendHelper.confirm()) {
       return;
     }
-    window.__checkattachmentbeforesend__SendMessageWithCheck.apply(this, aArgs);
+    CheckAttachmentBeforeSendHelper.doPostProcess((function() {
+      window.__checkattachmentbeforesend__SendMessageWithCheck.apply(this, aArgs);
+    }).bind(this));
   };
 
   window.__checkattachmentbeforesend__SendMessageLater = window.SendMessageLater;
@@ -151,7 +176,9 @@ window.addEventListener('load', function CheckAttachmentBeforeSendOnLoad(aEvent)
     if (!CheckAttachmentBeforeSendHelper.confirm()) {
       return;
     }
-    window.__checkattachmentbeforesend__SendMessageLater.apply(this, aArgs);
+    CheckAttachmentBeforeSendHelper.doPostProcess((function() {
+      window.__checkattachmentbeforesend__SendMessageLater.apply(this, aArgs);
+    }).bind(this));
   };
 }, false);
 
