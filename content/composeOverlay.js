@@ -57,11 +57,11 @@ var CheckAttachmentBeforeSendHelper = {
 
     var recipients = this.getAllRecipients();
     if (recipients.to.length + recipients.cc.length + recipients.bcc.length === 0) {
-      this.log('No external address.');
+      this.log('No external recipient.');
       return true;
     }
+    this.log('External recipients are detected: ', recipients);
 
-    this.log('External addresses are detected: ', recipients);
     return true;
   },
 
