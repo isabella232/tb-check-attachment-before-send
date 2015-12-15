@@ -17,6 +17,7 @@ var gParams;
 
 function onLoad() {
   gParams = window.arguments[0];
+  utils.log('params', gParams);
 
   if (utils.getMyPref('disableAcceptUntilChecked')) {
     let acceptButton = document.documentElement.getButton('accept');
@@ -25,10 +26,12 @@ function onLoad() {
 }
 
 function onAccept() {
+  utils.log('accepted');
   gParams.confirmed = true;
   window.close();
 }
 
 function onCancel() {
+  utils.log('canceled');
   window.close();
 }
