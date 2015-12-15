@@ -8,3 +8,16 @@
 
 <!ENTITY confirm.accept.label "Send">
 <!ENTITY confirm.cancel.label "Cancel">
+
+
+<!ENTITY config.title "Configurations of Check Attachment before Send">
+
+<!ENTITY config.tabs.general "General">
+
+<!ENTITY config.ignoreDomains.caption "Exceptional domains to bypass confirmation (ex. internal domains)">
+<!ENTITY config.confirmationTargetMatcher.caption "Matching regular expression pattern for subject and body to require confirmation">
+<!ENTITY config.confirmationTargetMatcher.error "!">
+<!ENTITY config.confirmationTargetMatcher.errortooltiptext "Invalid regular expression. You must correct this.">
+<!ENTITY config.disableAcceptUntilChecked "Disallow to push &quot;Send&quot; button until all recipients are verified.">
+<!ENTITY config.bypassConfirmationByOthers "Bypass any confirmation by other addons before sending, if it is confirmed via this addon.">
+<!ENTITY config.debug "Enable debug logs">

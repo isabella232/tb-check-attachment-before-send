@@ -27,13 +27,13 @@ var CheckAttachmentBeforeSendHelper = {
     });
   },
 
-  get confirmationPattern() {
-    if ('_cachedConfirmationPattern' in this)
-      return this._cachedConfirmationPattern;
+  get confirmationTargetMatcher() {
+    if ('_cachedConfirmationTargetMatcher' in this)
+      return this._cachedConfirmationTargetMatcher;
 
-    var pattern = utils.getMyPref('confirmationPattern') || '';
+    var pattern = utils.getMyPref('confirmationTargetMatcher') || '';
     if (!pattern)
-      return this._cachedConfirmationPattern = null;
+      return this._cachedConfirmationTargetMatcher = null;
 
     pattern = pattern.trim();
     try {
@@ -43,7 +43,7 @@ var CheckAttachmentBeforeSendHelper = {
       Cu.reportError(e);
       pattern = null;
     }
-    return this._cachedConfirmationPattern = pattern;
+    return this._cachedConfirmationTargetMatcher = pattern;
   },
 
   get hasAttachment() {
@@ -65,7 +65,7 @@ var CheckAttachmentBeforeSendHelper = {
   confirm: function() {
     // clear cache
     delete this._cachekdIgnoredDomains;
-    delete this._cachedConfirmationPattern;
+    delete this._cachedConfirmationTargetMatcher;
     this.lastConfirmed = false;
 
     if (!this.hasAttachment) {
@@ -73,10 +73,10 @@ var CheckAttachmentBeforeSendHelper = {
       return true;
     }
 
-    if (this.confirmationPattern &&
-        !this.confirmationPattern.test(this.body.textContent.replace(/\s+/g, '')) &&
-        !this.confirmationPattern.test(this.subject)) {
-      utils.log('Not matched to the confirmation pattern.', this.confirmationPattern.source);
+    if (this.confirmationTargetMatcher &&
+        !this.confirmationTargetMatcher.test(this.body.textContent.replace(/\s+/g, '')) &&
+        !this.confirmationTargetMatcher.test(this.subject)) {
+      utils.log('Not matched to the confirmation pattern.', this.confirmationTargetMatcher.source);
       return true;
     }
 

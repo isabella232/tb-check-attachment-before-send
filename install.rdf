@@ -8,7 +8,9 @@
                    em:version="0.1"
                    em:description="Confirms to send a mail with any attachment."
                    em:creator="ClearCode Inc."
-                   em:homepageURL="http://www.clear-code.com/">
+                   em:homepageURL="http://www.clear-code.com/"
+                   em:optionsURL="chrome://check-attachment-before-send/content/config.xul"
+                   em:type="2">
 
     <!--em:updateURL></em:updateURL-->
     <!--em:updateKey></em:updateKey-->

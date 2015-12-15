@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!DOCTYPE prefwindow SYSTEM "chrome://check-attachment-before-send/locale/check-attachment-before-send.dtd">
+<prefwindow id="check-attachment-before-send-config"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="&config.title;">
+  <prefpane id="prefpane-general" label="&config.tabs.general;"
+            onpaneload="validateMatcher();">
+    <preferences>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.ignoreDomains"
+                  name="extensions.check-attachment-before-send@clear-code.com.ignoreDomains"
+                  type="string"/>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher"
+                  name="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher"
+                  type="string"/>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
+                  name="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
+                  type="bool"/>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.bypassConfirmationByOthers"
+                  name="extensions.check-attachment-before-send@clear-code.com.bypassConfirmationByOthers"
+                  type="bool"/>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.debug"
+                  name="extensions.check-attachment-before-send@clear-code.com.debug"
+                  type="bool"/>
+    </preferences>
+    <groupbox>
+      <caption label="&config.ignoreDomains.caption;"/>
+      <textbox id="extensions.check-attachment-before-send@clear-code.com.ignoreDomains-textbox"
+               preference="extensions.check-attachment-before-send@clear-code.com.ignoreDomains"
+               multiline="true"
+               rows="4"
+               onsyncfrompreference="return document.getElementById('extensions.check-attachment-before-send@clear-code.com.ignoreDomains').value.replace(/^[,|]|[,|]$/g, '').replace(/\s*[,|]\s*|\s+/g, '\n')"
+               onsynctopreference="return document.getElementById('extensions.check-attachment-before-send@clear-code.com.ignoreDomains-textbox').value.trim().replace(/\n+/g, '|')"/>
+    </groupbox>
+    <groupbox>
+      <caption label="&config.confirmationTargetMatcher.caption;"/>
+      <hbox align="center">
+        <textbox id="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher-textbox"
+                 preference="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher"
+                 flex="1"
+                 oninput="validateMatcher()"
+                 errortooltiptext="&config.confirmationTargetMatcher.errortooltiptext;"/>
+        <deck id="confirmationTargetMatcher-error-message">
+          <spacer/>
+          <label value="&config.confirmationTargetMatcher.error;"
+                 tooltiptext="&config.confirmationTargetMatcher.errortooltiptext;"
+                 style="
+                     color: red;
+                     text-shadow: white 0 0 1px,
+                                  white 0 0 1px,
+                                  white 0 0 1px;
+                 "/>
+        </deck>
+      </hbox>
+    </groupbox>
+    <checkbox id="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked-check"
+        preference="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
+        label="&config.disableAcceptUntilChecked;"/>
+    <checkbox id="extensions.check-attachment-before-send@clear-code.com.bypassConfirmationByOthers-check"
+        preference="extensions.check-attachment-before-send@clear-code.com.bypassConfirmationByOthers"
+        label="&config.bypassConfirmationByOthers;"/>
+    <checkbox id="extensions.check-attachment-before-send@clear-code.com.debug-check"
+        preference="extensions.check-attachment-before-send@clear-code.com.debug"
+        label="&config.debug;"/>
+    <script type="application/x-javascript"><![CDATA[
+      function validateMatcher() {
+        var field = document.getElementById('extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher-textbox');
+        var deck = document.getElementById('confirmationTargetMatcher-error-message')
+        try {
+          new RegExp(field.value);
+          field.style.boxShadow = '';
+          field.setAttribute('tooltiptext', '');
+          deck.selectedIndex = 0;
+        }
+        catch(aError) {
+          field.style.boxShadow = '0px 0px 1px red, 0px 0px 3px red';
+          field.setAttribute('tooltiptext', field.getAttribute('errortooltiptext'));
+          deck.selectedIndex = 1;
+        }
+      }
+    ]]></script>
+  </prefpane>
+</prefwindow>
+
