@@ -21,4 +21,22 @@
     <stringbundle id="messages"
                   src="chrome://check-attachment-before-send/locale/check-attachment-before-send.properties"/>
   </stringbundleset>
+  <iframe id="body"
+          flex="1"
+          persist="height"
+          style="min-height: 3em;"
+          src="data:text/html,&lt;!DOCTYPE html&gt;&lt;html style=&quot;padding: 0.3em; color: -moz-fieldtext; background: -moz-field;;&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;* { font-size: medium !important; }&lt;/style&gt;&lt;/html&gt;"/>
+  <splitter/>
+  <listbox id="recipients"
+           flex="2"
+           persist="height"
+           style="min-height: 5em;"
+           onclick="onRecipientClick(event);">
+    <listhead>
+      <listheader label="&confirm.caption.recipients;"/>
+    </listhead>
+    <listcols>
+      <listcol flex="1"/>
+    </listcols>
+  </listbox>
 </dialog>

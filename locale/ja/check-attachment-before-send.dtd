@@ -4,7 +4,7 @@
 
 <!ENTITY confirm.title "この添付ファイルありのメールを送信してもよいですか？">
 
-<!ENTITY confirm.body.caption "本文:">
+<!ENTITY confirm.caption.recipients "宛先">
 
 <!ENTITY confirm.accept.label "送信">
 <!ENTITY confirm.cancel.label "キャンセル">

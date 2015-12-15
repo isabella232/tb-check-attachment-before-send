@@ -19,10 +19,78 @@ function onLoad() {
   gParams = window.arguments[0];
   utils.log('params', gParams);
 
-  if (utils.getMyPref('disableAcceptUntilChecked')) {
-    let acceptButton = document.documentElement.getButton('accept');
-    acceptButton.disabled = true;
+  var bodyField = document.getElementById('body');
+  bodyField.contentDocument.documentElement.appendChild(gParams.body);
+
+  gParams.recipients.to.forEach(addRecipientItem);
+  gParams.recipients.cc.forEach(addRecipientItem);
+  gParams.recipients.bcc.forEach(addRecipientItem);
+
+  checkAllRecipientsConfirmed();
+}
+
+function addRecipientItem(aRecipient) {
+  var label = createRecipientLabel(aRecipient);
+
+  var item = document.createElement('listitem');
+  item.setAttribute('tooltiptext', foldLongTooltipText(label));
+
+  var cell = document.createElement('listcell');
+  var checkbox = document.createElement('checkbox');
+  checkbox.setAttribute('label', label);
+
+  cell.appendChild(checkbox);
+  item.appendChild(cell);
+
+  document.getElementById('recipients').appendChild(item);
+}
+
+function createRecipientLabel(aRecipient) {
+  var typePrefix = aRecipient.type + ': ';
+  if (aRecipient.name && aRecipient.name != aRecipient.address) {
+    return typePrefix + aRecipient.name + ' <' + aRecipient.address + '>';
   }
+  return typePrefix + (aRecipient.fullName || aRecipient.address);
+}
+
+var maxTooltipTextLength = 60;
+function foldLongTooltipText(aText) {
+  var folded = [];
+  while (aText.length > 0) {
+    folded.push(aText.substring(0, maxTooltipTextLength));
+    aText = aText.substring(maxTooltipTextLength);
+  }
+  return folded.join('\n');
+}
+
+function onRecipientClick(aEvent) {
+  var target = aEvent.target;
+  var checkbox = document.evaluate(
+        'ancestor-or-self::*[local-name()="listitem"]/descendant::*[local-name()="checkbox"]',
+        aEvent.target,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
+  if (checkbox) {
+    checkbox.checked = !checkbox.checked;
+    checkAllRecipientsConfirmed();
+  }
+}
+
+function isAllRecipientsConfirmed() {
+  return Array.every(document.querySelectorAll('checkbox'), function(aCheckbox) {
+    return aCheckbox.checked;
+  });
+}
+
+function checkAllRecipientsConfirmed() {
+  if (!utils.getMyPref('disableAcceptUntilChecked')) {
+    return;
+  }
+
+  let acceptButton = document.documentElement.getButton('accept');
+  acceptButton.disabled = !isAllRecipientsConfirmed();
 }
 
 function onAccept() {
