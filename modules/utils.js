@@ -32,7 +32,7 @@ var CheckAttachmentBeforeSendUtils = {
     aMessage = aMessage || '';
     aMessage = '[check-attachment-before-send] ' + aMessage;
     aExtraArgs.forEach(function(aArg) {
-      aMessage += ', ' + JSON.stringify(aArg);
+      aMessage += ', ' + uneval(aArg);
     });
 
 	ConsoleService.logStringMessage(aMessage);
