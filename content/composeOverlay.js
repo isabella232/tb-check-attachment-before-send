@@ -66,7 +66,7 @@ var CheckAttachmentBeforeSendHelper = {
   },
 
   get subject() {
-    return gMsgCompose.compFields.subject;
+    return document.getElementById('msgSubject').value;
   },
 
   confirm: function() {
