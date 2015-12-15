@@ -4,6 +4,9 @@
 
 var Cc = Components.classes;
 var Ci = Components.interfaces;
+var Cu = Components.utils;
+
+var { CheckAttachmentBeforeSendUtils: utils } = Cu.import('resource://check-attachment-before-send-modules/utils.js', {});
 
 function getMessage(aKey) {
   var bundle = document.getElementById('messages');
@@ -14,6 +17,11 @@ var gParams;
 
 function onLoad() {
   gParams = window.arguments[0];
+
+  if (utils.getPref('disableAcceptUntilChecked')) {
+    let acceptButton = document.documentElement.getButton('accept');
+    acceptButton.disabled = true;
+  }
 }
 
 function onAccept() {

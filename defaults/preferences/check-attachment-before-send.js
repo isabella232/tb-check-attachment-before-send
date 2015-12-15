@@ -6,3 +6,4 @@ pref("extensions.check-attachment-before-send@clear-code.com.debug", false);
 
 pref("extensions.check-attachment-before-send@clear-code.com.ignoreDomains", "");
 pref("extensions.check-attachment-before-send@clear-code.com.confirmationPattern", "emergency|urgent");
+pref("extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked", true);
