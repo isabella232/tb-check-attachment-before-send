@@ -3,6 +3,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <!ENTITY confirm.title "Do you really want this mail to be sent with attachments?">
+<!ENTITY confirm.description "Now you are going to send a mail with attachment(s). Do you really want this to be sent to these recipients?">
 
 <!ENTITY confirm.caption.recipients "Recipients">
 

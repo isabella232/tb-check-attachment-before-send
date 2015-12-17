@@ -3,6 +3,7 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
 <!ENTITY confirm.title "この添付ファイルありのメールを送信してもよいですか？">
+<!ENTITY confirm.description "添付ファイルがあるメールを送信しようとしています。本当にこれらの宛先に送信してよいですか？">
 
 <!ENTITY confirm.caption.recipients "宛先">
 

@@ -21,6 +21,7 @@
     <stringbundle id="messages"
                   src="chrome://check-attachment-before-send/locale/check-attachment-before-send.properties"/>
   </stringbundleset>
+  <description flex="1">&confirm.description;</description>
   <iframe id="body"
           flex="1"
           persist="height"
