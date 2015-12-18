@@ -17,7 +17,7 @@ var gParams;
 
 function onLoad() {
   gParams = window.arguments[0];
-  utils.log('params', gParams);
+//  utils.log('params', gParams);
 
   var bodyField = document.getElementById('body');
   bodyField.contentDocument.documentElement.appendChild(gParams.body);
