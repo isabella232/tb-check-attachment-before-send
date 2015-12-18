@@ -155,6 +155,9 @@ var CheckAttachmentBeforeSendHelper = {
   },
 
   openAllAttachments: function() {
+    var attachmentsBacket = GetMsgAttachmentElement();
+    attachmentsBacket.selectAll();
+    OpenSelectedAttachment();
   }
 };
 window.CheckAttachmentBeforeSendHelper = CheckAttachmentBeforeSendHelper;
