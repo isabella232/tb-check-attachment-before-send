@@ -156,8 +156,45 @@ var CheckAttachmentBeforeSendHelper = {
 
   openAllAttachments: function() {
     var attachmentsBacket = GetMsgAttachmentElement();
-    attachmentsBacket.selectAll();
-    OpenSelectedAttachment();
+    for (let attachmentItem of attachmentsBacket.childNodes) {
+      this.openAttachment(attachmentItem.attachment);
+    }
+  },
+
+  messagePrefixMatcher: /^mailbox-message:|^imap-message:|^news-message:/i,
+  openAttachment: function(aAttachment) {
+    var url = aAttachment.url;
+    if (this.messagePrefixMatcher.test(url))
+      this.openAttachedMessage(aAttachment);
+    else
+      this.openAttachedFile(aAttachment);
+  },
+
+  openAttachedMessage: function(aAttachment) {
+    var url = aAttachment.url;
+    var msgHdr = gMessenger.messageServiceFromURI(url).messageURIToMsgHdr(url);
+    if (msgHdr)
+      MailUtils.openMessageInNewWindow(msgHdr);
+  },
+
+  openAttachedFile: function(aAttachment) {
+    let url = aAttachment.url;
+    url = Services.io.newURI(url, null, null);
+    url = url.QueryInterface(Ci.nsIURL);
+    if (!url)
+      rerurn;
+
+    if (url.scheme == 'file') {
+      url.QueryInterface(Ci.nsIFileURL).file.launch();
+    }
+    else {
+      let channel = Services.io.newChannelFromURI(url);
+      if (channel) {
+        let loader = Cc['@mozilla.org/uriloader;1']
+                       .getService(Ci.nsIURILoader);
+        loader.openURI(channel, true, new nsAttachmentOpener());
+      }
+    }
   }
 };
 window.CheckAttachmentBeforeSendHelper = CheckAttachmentBeforeSendHelper;
