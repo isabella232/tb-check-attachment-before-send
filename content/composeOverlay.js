@@ -175,14 +175,18 @@ var CheckAttachmentBeforeSendHelper = {
     var msgHdr = gMessenger.messageServiceFromURI(url).messageURIToMsgHdr(url);
     if (msgHdr)
       MailUtils.openMessageInNewWindow(msgHdr);
+    else
+      utils.log('failed to open attached message: ' + url);
   },
 
   openAttachedFile: function(aAttachment) {
     let url = aAttachment.url;
     url = Services.io.newURI(url, null, null);
     url = url.QueryInterface(Ci.nsIURL);
-    if (!url)
+    if (!url) {
+      utils.log('failed to open attached file: ' + aAttachment.url);
       rerurn;
+    }
 
     if (url.scheme == 'file') {
       url.QueryInterface(Ci.nsIFileURL).file.launch();
@@ -193,6 +197,9 @@ var CheckAttachmentBeforeSendHelper = {
         let loader = Cc['@mozilla.org/uriloader;1']
                        .getService(Ci.nsIURILoader);
         loader.openURI(channel, true, new nsAttachmentOpener());
+      }
+      else {
+        utils.log('failed to create channel for the attached file: ' + url.spec);
       }
     }
   }
