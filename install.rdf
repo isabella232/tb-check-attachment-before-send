@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="check-attachment-before-send@clear-code.com"
                    em:name="Check Attachment before Send"
-                   em:version="0.3"
+                   em:version="0.4"
                    em:description="Confirms to send a mail with any attachment."
                    em:creator="ClearCode Inc."
                    em:homepageURL="http://www.clear-code.com/"
