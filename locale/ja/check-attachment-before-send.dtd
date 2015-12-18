@@ -19,6 +19,7 @@
 <!ENTITY config.confirmationTargetMatcher.caption "件名または本文が以下の正規表現に当てはまる場合に確認を行う">
 <!ENTITY config.confirmationTargetMatcher.error "!">
 <!ENTITY config.confirmationTargetMatcher.errortooltiptext "不正な正規表現です。修正して下さい。">
+<!ENTITY config.openAllAttachments "確認のためにすべての添付ファイルを自動的に開く">
 <!ENTITY config.disableAcceptUntilChecked "すべての宛先を確認するまで「送信」ボタンを無効化する">
 <!ENTITY config.bypassConfirmationByOthers "このアドオンにより送信を確認した場合、他のアドオンによる確認を省略する">
 <!ENTITY config.debug "デバッグログを有効にする">

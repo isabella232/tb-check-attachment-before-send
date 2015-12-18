@@ -16,6 +16,9 @@
       <preference id="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher"
                   name="extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher"
                   type="string"/>
+      <preference id="extensions.check-attachment-before-send@clear-code.com.openAllAttachments"
+                  name="extensions.check-attachment-before-send@clear-code.com.openAllAttachments"
+                  type="bool"/>
       <preference id="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
                   name="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
                   type="bool"/>
@@ -56,6 +59,9 @@
         </deck>
       </hbox>
     </groupbox>
+    <checkbox id="extensions.check-attachment-before-send@clear-code.com.openAllAttachments-check"
+        preference="extensions.check-attachment-before-send@clear-code.com.openAllAttachments"
+        label="&config.openAllAttachments;"/>
     <checkbox id="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked-check"
         preference="extensions.check-attachment-before-send@clear-code.com.disableAcceptUntilChecked"
         label="&config.disableAcceptUntilChecked;"/>

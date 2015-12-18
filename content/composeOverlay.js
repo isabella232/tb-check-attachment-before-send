@@ -90,7 +90,8 @@ var CheckAttachmentBeforeSendHelper = {
     var params = {
       confirmed:  false,
       recipients: recipients,
-      body:       this.body.cloneNode(true)
+      body:       this.body.cloneNode(true),
+      opener:     window
     };
     window.openDialog('chrome://check-attachment-before-send/content/confirm.xul',
                       'check-attachment-before-send',
@@ -151,6 +152,9 @@ var CheckAttachmentBeforeSendHelper = {
       }
     }
     aCallback();
+  },
+
+  openAllAttachments: function() {
   }
 };
 window.CheckAttachmentBeforeSendHelper = CheckAttachmentBeforeSendHelper;

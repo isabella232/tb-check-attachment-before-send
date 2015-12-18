@@ -27,6 +27,9 @@ function onLoad() {
   gParams.recipients.bcc.forEach(addRecipientItem);
 
   checkAllRecipientsVerified();
+
+  if (utils.getMyPref('openAllAttachments'))
+    gParams.opener.CheckAttachmentBeforeSendHelper.openAllAttachments();
 }
 
 function addRecipientItem(aRecipient) {

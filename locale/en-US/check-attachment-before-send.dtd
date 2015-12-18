@@ -19,6 +19,7 @@
 <!ENTITY config.confirmationTargetMatcher.caption "Matching regular expression pattern for subject and body to require confirmation">
 <!ENTITY config.confirmationTargetMatcher.error "!">
 <!ENTITY config.confirmationTargetMatcher.errortooltiptext "Invalid regular expression. You must correct this.">
+<!ENTITY config.openAllAttachments "Open all attachments automatically for confirmation">
 <!ENTITY config.disableAcceptUntilChecked "Disallow to push &quot;Send&quot; button until all recipients are verified.">
 <!ENTITY config.bypassConfirmationByOthers "Bypass any confirmation by other addons before sending, if it is confirmed via this addon.">
 <!ENTITY config.debug "Enable debug logs">
