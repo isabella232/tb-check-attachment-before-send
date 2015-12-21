@@ -18,3 +18,10 @@ To avoid such an annoying result, this provides ability to bypass other confirma
 Currently this supports bypassing for only following addons:
 
  * [Check and Send](https://addons.mozilla.org/thunderbird/addon/check-and-send/)
+
+## Custom confirmation messages
+
+You can change the title and description text of the confirmation dialog, by changing two secret preferences;
+
+ * `extensions.check-attachment-before-send@clear-code.com.confirm.title`
+ * `extensions.check-attachment-before-send@clear-code.com.confirm.description`
