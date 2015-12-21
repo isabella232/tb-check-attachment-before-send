@@ -33,6 +33,9 @@ function onLoad() {
 
   var bodyField = document.getElementById('body');
   bodyField.contentDocument.documentElement.appendChild(gParams.body);
+  for (let link of bodyField.contentDocument.querySelectorAll('*[href]')) {
+    link.removeAttribute('href');
+  }
 
   gParams.recipients.to.forEach(addRecipientItem);
   gParams.recipients.cc.forEach(addRecipientItem);
