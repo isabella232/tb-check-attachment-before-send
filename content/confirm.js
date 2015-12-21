@@ -15,6 +15,18 @@ function getMessage(aKey) {
 
 var gParams;
 
+window.addEventListener('DOMContentLoaded', function onPreLoad(aEvent) {
+  window.removeEventListener(aEvent.type, onPreLoad, false);
+
+  var title = utils.getMyPref('confirm.title');
+  if (title)
+    document.title = title;
+
+  var description = utils.getMyPref('confirm.description');
+  if (description)
+    document.getElementById('main-description').textContent = description;
+}, false);
+
 function onLoad() {
   gParams = window.arguments[0];
 //  utils.log('params', gParams);

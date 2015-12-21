@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 pref("extensions.check-attachment-before-send@clear-code.com.debug", false);
+pref("extensions.check-attachment-before-send@clear-code.com.confirm.title", "");
+pref("extensions.check-attachment-before-send@clear-code.com.confirm.description", "");
 
 pref("extensions.check-attachment-before-send@clear-code.com.ignoreDomains", "");
 pref("extensions.check-attachment-before-send@clear-code.com.confirmationTargetMatcher", "emergency|urgent");
